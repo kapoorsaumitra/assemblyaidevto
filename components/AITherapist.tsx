@@ -12,11 +12,11 @@ import { ThemeToggle } from './ThemeToggle'
 
 // Initialize AssemblyAI client
 const assemblyClient = new AssemblyAI({
-  apiKey: process.env.NEXT_PUBLIC_ASSEMBLYAI_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_ASSEMBLYAI_API_KEY || '',
 })
 
 // Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY!)
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY || '')
 
 export function AITherapist() {
   const [isRecording, setIsRecording] = useState(false)
