@@ -72,18 +72,26 @@ export function AITherapist() {
         audio: audioBlob,
       })
 
-      setTranscript(response.text)
+      if (response?.text) {
+        setTranscript(response.text)
 
-      // Summarize the transcript (simple approach)
-      const summary = summarizeTranscript(response.text)
+        // Summarize the transcript (simple approach)
+        const summary = summarizeTranscript(response.text)
 
-      // Get AI therapist response using Gemini
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
-      const prompt = `As an AI therapist, provide a thoughtful and supportive response to the following patient statement: "${summary}". Use Markdown formatting to structure your response.`
-      const result = await model.generateContent(prompt)
-      const aiTherapistResponse = result.response.text()
-
-      setAiResponse(aiTherapistResponse)
+        // Get AI therapist response using Gemini
+        const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+        const prompt = `As an AI therapist, provide a thoughtful and supportive response to the following patient statement: "${summary}". Use Markdown formatting to structure your response.`
+        const result = await model.generateContent(prompt)
+        const aiTherapistResponse = result.response.text()
+        
+        if (aiTherapistResponse) {
+          setAiResponse(aiTherapistResponse)
+        } else {
+          setError('Failed to get AI response. Please try again.')
+        }
+      } else {
+        setError('Failed to transcribe audio. Please try again.')
+      }
     } catch (error) {
       console.error('Error processing audio:', error)
       setError('An error occurred while processing your request. Please try again.')
